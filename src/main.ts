@@ -47,7 +47,7 @@ app.get("*", async (req, res) => {
             fs.writeFileSync(file, buffer)
         }
     }
-    res.sendFile(file, { cacheControl: true, maxAge: 24 * 3600 })
+    res.sendFile(file, { cacheControl: true, maxAge: 24 * 3600 * 1000 })
 })
 app.listen(80, "0.0.0.0", 10, () => {
     console.log("http start listen", "http://localhost/")
