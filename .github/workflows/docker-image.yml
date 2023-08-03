@@ -25,3 +25,6 @@ jobs:
     
     - name: docker push
       run: docker push ${{vars.DOCKER_IMAGE_NAME}}
+      
+    - name: restart server
+      run: curl "http://a.veikr.com:8000/action/restartserver?x-token=${{secrets.SERVER_TOOLS_TOKEN}}&file=tonyzzp_avatar"
