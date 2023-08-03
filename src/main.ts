@@ -3,9 +3,9 @@ import newExpress from "express"
 import fs from "fs"
 import os from "os"
 import path from "path"
+import sharp from "sharp"
 import * as md5 from "ts-md5"
 import url from "url"
-import { images } from "./images.js"
 
 let CACHE_DIR = path.join(os.tmpdir(), "multiavatar/cache")
 fs.mkdirSync(CACHE_DIR, { recursive: true })
@@ -37,7 +37,9 @@ app.get("*", async (req, res) => {
         let svg = multiavatar(hash, true)
         let buffer: Buffer
         try {
-            buffer = await images.toPNG(svg);
+            // buffer = await images.toPNG(svg);
+            // buffer = await images.toPNGBySharp(svg)
+            buffer = await sharp(Buffer.from(svg)).resize(500).png().toBuffer()
         } catch (e) {
             console.warn(e)
         }
