@@ -30,6 +30,15 @@ setInterval(() => {
 let app = newExpress()
 app.get("*", async (req, res) => {
     let u = url.parse(req.url, true)
+    let size = 300
+    if (u.query.size) {
+        if (typeof u.query.size == "string") {
+            size = parseInt(u.query.size) || 300
+        } else {
+            size = parseInt(u.query.size[0]) || 300
+        }
+    }
+    size = Math.min(800, Math.max(size, 300))
     let hash = new md5.Md5().start().appendStr(u.path).end(false) as string
     let file = path.join(CACHE_DIR, hash + ".png")
     console.log(u.path, file)
@@ -37,9 +46,7 @@ app.get("*", async (req, res) => {
         let svg = multiavatar(hash, true)
         let buffer: Buffer
         try {
-            // buffer = await images.toPNG(svg);
-            // buffer = await images.toPNGBySharp(svg)
-            buffer = await sharp(Buffer.from(svg)).resize(500).png().toBuffer()
+            buffer = await sharp(Buffer.from(svg)).resize(size).png().toBuffer()
         } catch (e) {
             console.warn(e)
         }
