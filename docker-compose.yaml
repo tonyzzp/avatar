@@ -1,0 +1,6 @@
+services:
+  avatar:
+    container_name: avatar
+    image: tonyzzp/multiavatar:latest
+    ports:
+      - "8003:80"
