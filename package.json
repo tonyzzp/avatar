@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "start": "ts-node src/main.ts",
-    "build": "rollup -c"
+    "build": "tsc"
   },
   "author": "",
   "license": "ISC",
