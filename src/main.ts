@@ -4,8 +4,19 @@ import fs from "fs"
 import os from "os"
 import path from "path"
 import sharp from "sharp"
-import * as md5 from "ts-md5"
-import url from "url"
+
+const EXAMPLE = `
+<html>
+<body>
+<h4>examples</h4>
+<ul>
+    <li>/myname</li>
+    <li>/myname_123</li>
+    <li>/myname?size=300</li>
+<ul>
+</body>
+</html>
+`
 
 let CACHE_DIR = path.join(os.tmpdir(), "multiavatar/cache")
 fs.mkdirSync(CACHE_DIR, { recursive: true })
@@ -28,22 +39,25 @@ setInterval(() => {
 }, 3600 * 1000)
 
 let app = newExpress()
-app.get("*", async (req, res) => {
-    let u = url.parse(req.url, true)
+app.get("/:path([\\d\\w]+)", async (req, res) => {
+    console.log("-----req")
+    console.log(req.url)
+    console.log(req.params)
+    console.log(req.query)
+    let rpath = req.params.path.trim()
     let size = 300
-    if (u.query.size) {
-        if (typeof u.query.size == "string") {
-            size = parseInt(u.query.size) || 300
+    if (req.query.size) {
+        if (typeof req.query.size == "string") {
+            size = parseInt(req.query.size) || 300
         } else {
-            size = parseInt(u.query.size[0]) || 300
+            size = parseInt(req.query.size[0]) || 300
         }
     }
-    size = Math.min(800, Math.max(size, 300))
-    let hash = new md5.Md5().start().appendStr(u.path).end(false) as string
-    let file = path.join(CACHE_DIR, hash + ".png")
-    console.log(u.path, file)
+    size = Math.min(1000, Math.max(size, 300))
+    let file = path.join(CACHE_DIR, `${rpath}_${size}` + ".png")
+    console.log(rpath, file)
     if (!fs.existsSync(file)) {
-        let svg = multiavatar(hash, true)
+        let svg = multiavatar(rpath, true)
         let buffer: Buffer
         try {
             buffer = await sharp(Buffer.from(svg)).resize(size).png().toBuffer()
@@ -55,6 +69,9 @@ app.get("*", async (req, res) => {
         }
     }
     res.sendFile(file, { cacheControl: true, maxAge: 24 * 3600 * 1000 })
+})
+app.get("*", (req, resp) => {
+    resp.end(EXAMPLE)
 })
 app.listen(80, "0.0.0.0", 10, () => {
     console.log("http start listen", "http://localhost/")
