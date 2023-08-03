@@ -5,7 +5,7 @@ import rollupComonjs from "@rollup/plugin-commonjs"
 import rollupJson from "@rollup/plugin-json"
 
 export default defineConfig({
-    input: "main.ts",
+    input: "src/main.ts",
     output: {
         file: "dist/main.js",
         format: "es"
