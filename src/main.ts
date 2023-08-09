@@ -12,6 +12,7 @@ const EXAMPLE = `
 <ul>
     <li>/myname</li>
     <li>/myname_123</li>
+    <li>/myname@-_abc.com</li>
     <li>/myname?size=300</li>
 <ul>
 </body>
