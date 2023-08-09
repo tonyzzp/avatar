@@ -39,7 +39,7 @@ setInterval(() => {
 }, 3600 * 1000)
 
 let app = newExpress()
-app.get("/:path([\\d\\w]+)", async (req, res) => {
+app.get("/:path([\\d\\w\\-_@\\.]+)", async (req, res) => {
     console.log("-----req")
     console.log(req.url)
     console.log(req.params)
