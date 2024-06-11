@@ -5,5 +5,5 @@ COPY package.json /app/
 COPY pnpm-lock.yaml /app/
 COPY tsconfig.json /app/
 WORKDIR /app
-RUN npm i && npm run build
-CMD [ "node", "/app/dist/main.js" ]
+RUN npm i && npm run build && mv /app/dist/main.js /app/dist/multiavatar.js
+ENTRYPOINT [ "node", "/app/dist/multiavatar.js" ]
