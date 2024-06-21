@@ -2,6 +2,12 @@
 
 from : https://github.com/multiavatar/Multiavatar
 
+
+# docker
+```
+docker run -itd -p 80:80 registry.cn-hongkong.aliyuncs.com/tonyzzp/avatar
+```
+
 ## start
 ```
 pnpm i
