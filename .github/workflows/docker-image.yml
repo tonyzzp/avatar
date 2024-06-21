@@ -36,7 +36,7 @@ jobs:
           context: .
           push: true
           tags: |
-            ${{vars.DOCKER_REGISTRY}/}${{github.repository}}
+            ${{vars.DOCKER_REGISTRY}}/${{github.repository}}
           platforms: linux/amd64,linux/arm64
 
       - name: restart server
